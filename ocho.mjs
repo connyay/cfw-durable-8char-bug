@@ -66,6 +66,9 @@ export class Ocho {
       let key = url.searchParams.get("key") || uniqueVal.slice(0, 8);
       let value = url.searchParams.get("value") || uniqueVal.slice(8);
 
+      // Appears to be a bug when writing into storage with an 8 character key.
+      // Key get mangled with what appears to be other values. Then gets stuck
+      // in a state where that key can no longer be deleted.
       await this.storage.put(key, value);
       return new Response(JSON.stringify({ key, value }, null, 2), {
         headers: { "Content-Type": "application/json; charset=UTF-8" },
